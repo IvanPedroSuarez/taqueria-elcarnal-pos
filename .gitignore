@@ -1,0 +1,24 @@
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Composer
+/vendor/
+composer.lock
+
+# Logs
+*.log
+error_log
+
+# Archivos temporales
+*.tmp
+*.temp
+*.bak
+
+# Configuración local (NO ignorar en este caso, necesitamos database.php)
+# config/database.php ya tiene fallback a valores locales

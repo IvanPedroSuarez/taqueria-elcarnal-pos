@@ -1,0 +1,11 @@
+{
+    "name": "taqueria-elcarnal/sistema-pos",
+    "description": "Sistema POS para Taqueria El Carnal - PHP Vanilla",
+    "type": "project",
+    "require": {
+        "php": ">=7.4"
+    },
+    "scripts": {
+        "start": "php -S 0.0.0.0:${PORT:-8080} -t ."
+    }
+}

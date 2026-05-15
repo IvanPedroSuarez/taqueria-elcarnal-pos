@@ -1,0 +1,159 @@
+===============================================================
+  TAQUERÍA EL CARNAL - GUÍA DE INSTALACIÓN
+  Sistema POS con PHP + MySQL
+===============================================================
+
+REQUISITOS PREVIOS
+------------------
+- PHP 7.4 o superior (recomendado PHP 8.0+)
+- MySQL 5.7 o superior (o MariaDB 10.3+)
+- Apache 2.4+ con mod_rewrite habilitado
+- Extensiones PHP: pdo_mysql, json, mbstring, session
+
+Se recomienda usar XAMPP, WAMP, MAMP o un servidor LAMP.
+
+
+PASO 1: COPIAR ARCHIVOS
+------------------------
+Copiar toda la carpeta del proyecto al directorio web:
+
+  En Linux (LAMP):
+    sudo cp -r taqueria_elcarnal_php/ /var/www/html/taqueria/
+    sudo chown -R www-data:www-data /var/www/html/taqueria/
+
+  En XAMPP:
+    Copiar a: C:\xampp\htdocs\taqueria\   (Windows)
+    Copiar a: /opt/lampp/htdocs/taqueria/  (Linux)
+
+  En WAMP:
+    Copiar a: C:\wamp64\www\taqueria\
+
+
+PASO 2: CREAR LA BASE DE DATOS
+-------------------------------
+Opción A - Desde línea de comandos:
+    mysql -u root -p < sql/schema.sql
+
+Opción B - Desde phpMyAdmin:
+    1. Abrir phpMyAdmin (http://localhost/phpmyadmin)
+    2. Ir a la pestaña "Importar"
+    3. Seleccionar el archivo sql/schema.sql
+    4. Clic en "Continuar"
+
+Esto creará la base de datos "taqueria_elcarnal" con todas las
+tablas y datos de ejemplo.
+
+
+PASO 3: CONFIGURAR CONEXIÓN A LA BASE DE DATOS
+-----------------------------------------------
+Editar el archivo: config/database.php
+
+Modificar estas líneas según tu configuración:
+
+    define('DB_HOST', 'localhost');     // Servidor MySQL
+    define('DB_NAME', 'taqueria_elcarnal');  // Nombre de BD
+    define('DB_USER', 'root');         // Usuario MySQL
+    define('DB_PASS', '');             // Contraseña MySQL
+
+NOTA: En XAMPP la contraseña por defecto suele ser vacía.
+      En WAMP la contraseña por defecto suele ser vacía.
+      En servidores de producción, usar un usuario dedicado.
+
+
+PASO 4: CONFIGURAR APACHE (opcional)
+-------------------------------------
+Si quieres un dominio local dedicado:
+
+1. Editar /etc/hosts (Linux/Mac) o C:\Windows\System32\drivers\etc\hosts (Windows):
+   Agregar: 127.0.0.1   taqueria.local
+
+2. Crear VirtualHost en Apache:
+   <VirtualHost *:80>
+       ServerName taqueria.local
+       DocumentRoot /var/www/html/taqueria
+       <Directory /var/www/html/taqueria>
+           AllowOverride All
+           Require all granted
+       </Directory>
+   </VirtualHost>
+
+3. Reiniciar Apache:
+   sudo systemctl restart apache2  (Linux)
+   O reiniciar desde el panel de XAMPP/WAMP
+
+
+PASO 5: VERIFICAR INSTALACIÓN
+------------------------------
+1. Abrir el navegador web
+2. Ir a: http://localhost/taqueria/
+   (o http://taqueria.local/ si configuraste VirtualHost)
+3. Debería aparecer la página de login
+
+
+PASO 6: ACCEDER AL SISTEMA
+---------------------------
+Usar las siguientes credenciales de prueba:
+
+  ADMINISTRADOR:
+    Usuario: admin
+    Contraseña: admin
+
+  MESERO:
+    Usuario: mesero1
+    Contraseña: mesero1
+
+  COCINA:
+    Usuario: cocina1
+    Contraseña: cocina1
+
+IMPORTANTE: Cambiar las contraseñas por defecto en producción
+desde el panel de administración (Admin > Usuarios).
+
+
+SOLUCIÓN DE PROBLEMAS COMUNES
+------------------------------
+
+1. Error "conexión a base de datos":
+   - Verificar que MySQL esté corriendo
+   - Verificar credenciales en config/database.php
+   - Verificar que la base de datos fue importada
+
+2. Página en blanco:
+   - Verificar que PHP esté instalado
+   - Revisar logs: /var/log/apache2/error.log
+   - Activar errores temporalmente en config/database.php:
+     ini_set('display_errors', 1);
+
+3. Error 403 Forbidden:
+   - Verificar permisos de la carpeta
+   - Verificar que mod_rewrite esté habilitado:
+     sudo a2enmod rewrite && sudo systemctl restart apache2
+
+4. Caracteres especiales mal:
+   - Verificar que el archivo schema.sql se importó con UTF-8
+   - Verificar la variable DB_CHARSET en config/database.php
+
+5. Sesiones no funcionan:
+   - Verificar que el directorio de sesiones de PHP es escribible
+   - Verificar la extensión session de PHP
+
+
+ESTRUCTURA DE LA BASE DE DATOS
+-------------------------------
+- roles: Roles del sistema (admin, mesero, cocina)
+- usuarios: Cuentas de acceso
+- categorias: Categorías de productos
+- productos: Menú de la taquería
+- mesas: Mesas del restaurante
+- pedidos: Pedidos/órdenes
+- pedido_detalles: Productos de cada pedido
+- bitacora: Registro de todas las operaciones
+- sesiones: Control de sesiones de usuarios
+
+
+CONTACTO
+--------
+Sistema desarrollado para Taquería El Carnal.
+Para soporte técnico, contactar al administrador del sistema.
+
+===============================================================
